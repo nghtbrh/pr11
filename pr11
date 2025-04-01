@@ -1,0 +1,64 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class Main {
+    private static final String FILE_NAME = "File.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Welcome!\n1. Write in file.\n2. Display the whole file (Read).\n3. Exit the editor.");
+            int inputOpt = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (inputOpt) {
+                case 1:
+                    writeToFile(scanner);
+                    break;
+                case 2:
+                    displayFile();
+                    break;
+                case 3:
+                    System.out.println("Exiting editor...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("wrong option. Please try again.");
+            }
+        }
+    }
+
+    private static void writeToFile(Scanner scanner) {
+        System.out.println("Choose mode: 1 - overwrite, 2 - Append");
+        int mode = scanner.nextInt();
+        scanner.nextLine();
+
+        boolean append = mode == 2;
+        try (FileWriter fw = new FileWriter(FILE_NAME, append);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            System.out.println("Enter text (type 'EXIT' on a new line to stop):");
+            while (true) {
+                String line = scanner.nextLine();
+                if ("EXIT".equals(line)) break;
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error occured while writing to file: " + e.getMessage());
+        }
+    }
+
+    private static void displayFile() {
+        try (FileReader fr = new FileReader(FILE_NAME);
+             BufferedReader br = new BufferedReader(fr)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+}
