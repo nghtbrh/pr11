@@ -9,7 +9,7 @@ public class Main {
         while (true) {
             System.out.println("Welcome!\n1. Write in file.\n2. Display the whole file (Read).\n3. Exit the editor.");
             int inputOpt = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (inputOpt) {
                 case 1:
